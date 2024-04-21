@@ -1,5 +1,5 @@
-import 'dotenv/config';
 import { envs } from "./config";
+import {AppRoutes} from './presentation/routes';
 import {Server} from './presentation/server';
 
 (() => {
@@ -12,5 +12,6 @@ import {Server} from './presentation/server';
     // todo: inicio de nuestro server
     new Server({
         port: envs.PORT,
+        routes: AppRoutes.routes
      }).start();// creamos una instancia y llamamos el metodo start para ejecutrala
  }
