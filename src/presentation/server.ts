@@ -3,7 +3,7 @@ import express, {Router} from 'express';
 // Esta funciones es una caracterestica de TypeScript que permite definir una estructura de tipos, en este caso Options sera el nombre de la interfaz
 interface Options{
     port?: number;// el signo ? indica que sera una propiedad opcional es decir, puede estar presente o no en un objeto que coincida con esta interfaz | number indica que si esta propiedad se encuentra  en un objeto de la interfaz, su valor debera ser numerico
-    routes: Router 
+    routes: Router;
 }
 
 export class Server {
@@ -21,6 +21,11 @@ export class Server {
 
     async start() {
 
+        // Middlewares
+        this.app.use( express.json() ); // Con este Middleware lo utilizamos para analizar el cuerpo de las solicitudes con formato JSON, con esto podemos enviar datos desde un cliente atraves de solicitudes POST o PUT con formato JSON.
+        this.app.use( express.urlencoded({ extended: true }) ); // Con este Middleware analizamos el cuerpo de las solicitudes entrantes codificadas en url, Algunos formularios Html envian datos utilizando este formato, con el parametro extended: true permitimos analizar los datos complejos en la url como estos mismo enviados desde formularios html que contienen matrices o objetos anidados
+
+        // Usar las rutas definidas
         this.app.use(this.routes);
 
         //Hacemos que la funcion asincronica se ejecute con el puerto actual
