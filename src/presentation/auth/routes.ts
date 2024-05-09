@@ -1,17 +1,24 @@
-import { Router } from "express";
-import { AuthController } from "./controllers";
+import { Router } from 'express';
+import { AuthController } from './controllers'; // 1
+import { AuthDataSourceImpl, AuthRepositoryImpl } from '../../infraestructure'; // 5
 
 export class AuthRoutes {
 
+
     static get routes(): Router {
-        const router = Router();
-        const controller = new AuthController()// creamos una instancia de authContoller y lo almacenamos en controller
+  
+      const router = Router();
 
-            router.post('/login', controller.loginUser)// respondemos con un mensaje login
-
-            router.post('/register', controller.registerUser)// respondemos con un mnesaje register
-
-            return router;
+      const datasource = new AuthDataSourceImpl(); //6
+      const AuthRepository = new AuthRepositoryImpl(datasource); //7
+      const controller = new AuthController(AuthRepository); // 2 // 8 actulizacion
+  
+        // Definir todas mis rutas especificas
+        router.post('/login', controller.loginUser) // 3
+        router.post('/register', controller.registerUser) // 4
+  
+  
+        return router;
     }
-
-}
+  
+  }
