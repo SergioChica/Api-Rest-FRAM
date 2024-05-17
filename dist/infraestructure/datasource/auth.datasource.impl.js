@@ -10,12 +10,22 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.AuthDataSourceImpl = void 0;
+const users_model_1 = require("../../data/models/users.model");
 const domain_1 = require("../../domain"); //2
 class AuthDataSourceImpl {
     register(registerUserDto) {
         return __awaiter(this, void 0, void 0, function* () {
             const { name, email, password } = registerUserDto; // 4
             try { //5
+                const exists = yield users_model_1.UserModel.findOne({ email });
+                if (exists)
+                    throw domain_1.CustomError.badRequest("User already exists");
+                const user = yield users_model_1.UserModel.create({
+                    name: name,
+                    email: email,
+                    password: password,
+                });
+                yield user.save();
                 return new domain_1.UserEntity(// 6
                 '1', name, email, password, ['USER']);
             }
