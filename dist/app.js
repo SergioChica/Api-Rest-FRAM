@@ -10,6 +10,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const config_1 = require("./config");
+const mongodb_1 = require("./data/mongodb");
 const routes_1 = require("./presentation/routes");
 const server_1 = require("./presentation/server");
 (() => {
@@ -18,6 +19,10 @@ const server_1 = require("./presentation/server");
 function main() {
     return __awaiter(this, void 0, void 0, function* () {
         // todo: await base de datos
+        yield mongodb_1.MongoDatabase.connect({
+            dbName: config_1.envs.MONGO_DB_NAME,
+            mongoUrl: config_1.envs.MONGO_URL,
+        });
         // todo: inicio de nuestro server
         new server_1.Server({
             port: config_1.envs.PORT,
